@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 import ast
 
@@ -10,6 +9,13 @@ NODE_TYPES = {
     ast.FunctionDef: 'Function/Method',
     ast.AsyncFunctionDef: 'AsyncFunction/Method',
 }
+
+# blame_output = [{
+#     'line': blame_ranges['startingLine'],
+#     'commit': blame_ranges['commit']['oid'],
+#     'date': blame_ranges['commit']['authoredDate'],
+#     'author': blame_ranges['commit']['name']
+# },]
 
 
 def get_line_numbers(source):
@@ -45,13 +51,6 @@ def get_line_numbers(source):
 def convert_to_datetime(string):
     datetime_object = datetime.strptime(string, '%Y-%m-%dT%H:%M:%SZ')
     return datetime_object
-
-
-def git_blame(fp):
-    stream = os.popen(f'git blame {fp}')
-    output = stream.readlines()
-    output = [x.strip() for x in output]
-    return output
 
 
 def get_dates(blame_output, lines, name):
@@ -112,18 +111,14 @@ def get_last_doc_commit(blame_output, lines, name, doc_index):
     return last_doc_commit
 
 
-def run_flags(source):
-    lines = get_line_numbers(source)
-    blame_output = git_blame(TEST_FILE_PATH)
+def run_flags(filepath, blame_output):
+    with open(filepath) as file:
+        source = file.read()
 
-    # output = [{
-    #     'line': blame_ranges['startingLine'],
-    #     'commit': blame_ranges['commit']['oid'],
-    #     'date': blame_ranges['commit']['authoredDate'],
-    #     'author': blame_ranges['commit']['name']
-    # },]
+    lines = get_line_numbers(source)
 
     flags = {}
+
     for name in lines.keys():
         latest_doc_date, latest_code_date, doc_index, code_index = \
             get_dates(blame_output, lines, name)
@@ -159,42 +154,3 @@ def run_flags(source):
         }
 
     return flags
-
-
-def save_flags():
-    with open(TEST_FILE_PATH) as fp:
-        source = fp.read()
-        flags = run_flags(source)
-        stale_docs, missing_docs, passed = [], [], []
-        for fn in flags.keys():
-            if flags[fn]["is_missing"]:
-                missing_docs.append(f"{fn} |"
-                                    f" CODE UPDATED BY: {author}")
-            elif flags[fn]["is_stale"]:
-                time_behind = flags[fn]["time_behind"]
-                last_doc_commit = flags[fn]["last_doc_commit"]
-                author = flags[fn]["author"]
-
-                stale_docs.append(f"{fn} | TIME BEHIND: "
-                            f"{time_behind} | LAST DOC COMMIT: "
-                            f"{last_doc_commit} "
-                            f"| CODE UPDATED BY: {author}")
-            else:
-                passed.append(f"{fn} ")
-
-    with open(FLAGS_TEXT_PATH, 'w') as f:
-        f.write("STALE DOCSTRINGS:\n")
-        f.write("-"*len("STALE DOCSTRINGS:") + "\n")
-        for item in stale_docs:
-            f.write("%s\n" % item)
-        f.write("\nMISSING DOCSTRINGS:\n")
-        f.write("-" * len("MISSING DOCSTRINGS:") + "\n")
-        for item in missing_docs:
-            f.write("%s\n" % item)
-        f.write("\nUP TO DATE:\n")
-        f.write("-" * len("UP TO DATE:") + "\n")
-        for item in passed:
-            f.write("%s\n" % item)
-
-
-save_flags()

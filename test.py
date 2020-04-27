@@ -1,4 +1,4 @@
-import sys, json, numpy as np
+import sys, json, maniac
 
 #Read data from stdin
 def read_in():
@@ -12,10 +12,10 @@ def main():
     blame_ranges = lines['repositoryOwner']['repository']['object'][
             'blame']['ranges']
 
-    content = []
+    blame_output = []
     for blame_range in blame_ranges:
         if blame_range['startingLine'] == blame_range['endingLine']:
-            content.append({
+            blame_output.append({
                 'line': blame_range['startingLine'],
                 'commit': blame_range['commit']['oid'],
                 'date': blame_range['commit']['authoredDate'],
@@ -24,12 +24,16 @@ def main():
         else:
             for i in range(blame_range['endingLine'] - blame_range[\
                     'startingLine'] + 1):
-                content.append({
+                blame_output.append({
                     'line': blame_range['startingLine'] + i,
                     'commit': blame_range['commit']['oid'],
                     'date': blame_range['commit']['authoredDate'],
                     'author': blame_range['commit']['name']
                 })
+
+    flags = maniac.run_flags(filepath, blame_output)
+    print("flags: ", flags)
+
 
 
     # print("blame json data: ", lines)
