@@ -39,7 +39,7 @@ def main():
 
     parsedURL = urlparse(file_url_string)
     flags = maniac.run_flags(parsedURL.geturl(), blame_output)
-    # print("flags: ", flags)
+    print("flags: ", flags)
 
 #start process
 if __name__ == '__main__':
