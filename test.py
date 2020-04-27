@@ -1,10 +1,11 @@
 import sys, json, maniac
+from urllib.parse import urlparse
+
 
 #Read data from stdin
 def read_in():
     lines = sys.stdin.readlines()
     #Since our input would only be having one line, parse our JSON data from that
-    # print('blahhhhh', lines[0])
     return lines[0], json.loads(lines[1])
 
 def main():
@@ -12,7 +13,7 @@ def main():
     #file is download_url string for file contents
     #data is json object of git blame response:
 
-    file, data = read_in()
+    file_url_string, data = read_in()
 
     blame_ranges = data['repositoryOwner']['repository']['object'][
             'blame']['ranges']
@@ -36,10 +37,9 @@ def main():
                     'author': blame_range['commit']['name']
                 })
 
-    flags = maniac.run_flags(url, blame_output)
-    print("flags: ", flags)
-
-    # print("blame json data: ", lines)
+    parsedURL = urlparse(file_url_string)
+    flags = maniac.run_flags(parsedURL.geturl(), blame_output)
+    # print("flags: ", flags)
 
 #start process
 if __name__ == '__main__':

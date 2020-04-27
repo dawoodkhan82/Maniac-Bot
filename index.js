@@ -40,6 +40,7 @@ query blame($login: String!, $name: String!, $path: String!){
 
 module.exports = app => {
   app.on('push', async context => {
+
     const commits = context.payload.commits
     var filesChanged = []
     var i
@@ -53,23 +54,24 @@ module.exports = app => {
         name: context.payload.repository.name,
         path: filesChanged[i]
       })
+
       // console.log(blameResponse['repositoryOwner']['repository']['object']['blame']['ranges'][0]['commit'])
-      // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
       const params = context.repo({ path: filesChanged[i] })
       const contents = await context.github.repos.getContents(params)
-      // console.log(contents['data']['download_url'])
 
       var spawn = require('child_process').spawn,
       py    = spawn('python', ['test.py']),
       data = blameResponse,
       dataString = '';
 
-      py.stdout.on('data', function(data){
-        dataString += data.toString()
+      py.stdout.on('data', function (data) {
+        dataString = data.toString()
       });
 
       /*Once the stream is done (on 'end') we want to simply log the received data to the console.*/
       py.stdout.on('end', function(){
+        const params = context.repo({ commit_sha: 'ce33905fa6759227376038fe135261f54ae281e7', body: 'test', path: 'README.md', position: 1, line: 1 })
+        context.github.repos.createCommitComment(params)
         console.log('Commit Comment: ', dataString);
       });
 
