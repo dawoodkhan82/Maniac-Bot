@@ -61,6 +61,7 @@ def convert_to_datetime(string):
 
 
 def get_dates(blame_output, lines, name):
+
     if lines[name]["doc_lineno_start"]:
         if lines[name]["doc_lineno_start"] == \
                 lines[name]["doc_lineno_end"]:
@@ -91,8 +92,7 @@ def get_dates(blame_output, lines, name):
         code_output_dates = [convert_to_datetime(item) for item in
                              code_dates]
         latest_code_date = max(code_output_dates)
-        code_index = code_dates.index(latest_code_date)
-
+        code_index = code_output_dates.index(latest_code_date)
     return latest_doc_date, latest_code_date, doc_index, code_index
 
 
@@ -125,12 +125,10 @@ def run_flags(url, blame_output):
         source = file.read()
 
     lines = get_line_numbers(source)
-
     flags = {}
 
     for name in lines.keys():
-        latest_doc_date, latest_code_date, doc_index, code_index = \
-            get_dates(blame_output, lines, name)
+        latest_doc_date, latest_code_date, doc_index, code_index = get_dates(blame_output, lines, name)
 
         if not latest_doc_date:
             missing = True

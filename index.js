@@ -40,7 +40,6 @@ query blame($login: String!, $name: String!, $path: String!){
 
 module.exports = app => {
   app.on('push', async context => {
-
     const commits = context.payload.commits
     var filesChanged = []
     var i
@@ -70,9 +69,10 @@ module.exports = app => {
 
       /*Once the stream is done (on 'end') we want to simply log the received data to the console.*/
       py.stdout.on('end', function(){
-        // const params = context.repo({ commit_sha: 'ce33905fa6759227376038fe135261f54ae281e7', body: 'test', path: 'README.md', position: 1, line: 1 })
-        // context.github.repos.createCommitComment(params)
-        console.log('Commit Comment: ', dataString);
+        const JSONDataString = JSON.parse(dataString)
+        const params = context.repo({ commit_sha: context.payload.head_commit.id, body: JSONDataString, path: filesChanged[i], position: 1, line: 6 })
+        context.github.repos.createCommitComment(params)
+        console.log('Commit Comment: ', JSONDataString);
       });
 
       py.stdin.write(contents['data']['download_url']);
