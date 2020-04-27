@@ -9,7 +9,7 @@ def read_in():
 def main():
     #get our data as an array from read_in()
     blame_json = read_in()
-    print("3333333333333333333333333333333", blame_json)
+    print("blame json data: ", blame_json)
 
 #start process
 if __name__ == '__main__':
