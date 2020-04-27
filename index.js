@@ -54,7 +54,10 @@ module.exports = app => {
         path: filesChanged[i]
       })
       // console.log(blameResponse['repositoryOwner']['repository']['object']['blame']['ranges'][0]['commit'])
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+      // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+      const params = context.repo({ path: filesChanged[i] })
+      const contents = await context.github.repos.getContents(params)
+      // console.log(contents['data']['download_url'])
 
       var spawn = require('child_process').spawn,
       py    = spawn('python', ['test.py']),
@@ -62,7 +65,7 @@ module.exports = app => {
       dataString = '';
 
       py.stdout.on('data', function(data){
-        dataString = data.toString();
+        dataString += data.toString()
       });
 
       /*Once the stream is done (on 'end') we want to simply log the received data to the console.*/
@@ -70,6 +73,8 @@ module.exports = app => {
         console.log('Commit Comment: ', dataString);
       });
 
+      py.stdin.write(contents['data']['download_url']);
+      py.stdin.write('\n')
       py.stdin.write(JSON.stringify(data));
       py.stdin.end();
     }

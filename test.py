@@ -4,12 +4,17 @@ import sys, json, maniac
 def read_in():
     lines = sys.stdin.readlines()
     #Since our input would only be having one line, parse our JSON data from that
-    return json.loads(lines[0])
+    # print('blahhhhh', lines[0])
+    return lines[0], json.loads(lines[1])
 
 def main():
     #get our data as an array from read_in()
-    lines = read_in()
-    blame_ranges = lines['repositoryOwner']['repository']['object'][
+    #file is download_url string for file contents
+    #data is json object of git blame response:
+
+    file, data = read_in()
+
+    blame_ranges = data['repositoryOwner']['repository']['object'][
             'blame']['ranges']
 
     blame_output = []
@@ -33,8 +38,6 @@ def main():
 
     flags = maniac.run_flags(filepath, blame_output)
     print("flags: ", flags)
-
-
 
     # print("blame json data: ", lines)
 
