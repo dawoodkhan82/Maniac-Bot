@@ -25,7 +25,7 @@ def main():
                 'line': blame_range['startingLine'],
                 'commit': blame_range['commit']['oid'],
                 'date': blame_range['commit']['authoredDate'],
-                'author': blame_range['commit']['name']
+                'author': blame_range['commit']['author']['name']
             })
         else:
             for i in range(blame_range['endingLine'] - blame_range[\
@@ -34,12 +34,12 @@ def main():
                     'line': blame_range['startingLine'] + i,
                     'commit': blame_range['commit']['oid'],
                     'date': blame_range['commit']['authoredDate'],
-                    'author': blame_range['commit']['name']
+                    'author': blame_range['commit']['author']['name']
                 })
 
     parsedURL = urlparse(file_url_string)
     flags = maniac.run_flags(parsedURL.geturl(), blame_output)
-    print("flags: ", flags)
+    print(flags)
 
 #start process
 if __name__ == '__main__':

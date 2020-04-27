@@ -64,14 +64,14 @@ module.exports = app => {
       data = blameResponse,
       dataString = '';
 
-      py.stdout.on('data', function (data) {
-        dataString = data.toString()
+      py.stdout.on('data', function(data){
+        dataString += data.toString();
       });
 
       /*Once the stream is done (on 'end') we want to simply log the received data to the console.*/
       py.stdout.on('end', function(){
-        const params = context.repo({ commit_sha: 'ce33905fa6759227376038fe135261f54ae281e7', body: 'test', path: 'README.md', position: 1, line: 1 })
-        context.github.repos.createCommitComment(params)
+        // const params = context.repo({ commit_sha: 'ce33905fa6759227376038fe135261f54ae281e7', body: 'test', path: 'README.md', position: 1, line: 1 })
+        // context.github.repos.createCommitComment(params)
         console.log('Commit Comment: ', dataString);
       });
 
