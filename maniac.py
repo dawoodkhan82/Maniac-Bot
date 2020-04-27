@@ -1,5 +1,7 @@
 from datetime import datetime
 import ast
+import urllib.request
+
 
 FLAGS_TEXT_PATH = 'flags.txt'
 TEST_FILE_PATH = 'test_file.py'
@@ -16,6 +18,11 @@ NODE_TYPES = {
 #     'date': blame_ranges['commit']['authoredDate'],
 #     'author': blame_ranges['commit']['name']
 # },]
+
+
+def download_file(url):
+    filename, _ = urllib.request.urlretrieve(url)
+    return filename
 
 
 def get_line_numbers(source):
@@ -111,8 +118,10 @@ def get_last_doc_commit(blame_output, lines, name, doc_index):
     return last_doc_commit
 
 
-def run_flags(filepath, blame_output):
-    with open(filepath) as file:
+def run_flags(url, blame_output):
+
+    filename = download_file(url)
+    with open(filename) as file:
         source = file.read()
 
     lines = get_line_numbers(source)
@@ -145,12 +154,16 @@ def run_flags(filepath, blame_output):
             last_doc_commit = None
             author = None
 
-        flags[name] = {
-            "is_stale": stale,
-            "is_missing": missing,
-            "time_behind": time_behind,
-            "last_doc_commit": last_doc_commit,
-            "author": author
-        }
+        if stale:
+            if missing:
+                comment = f"WARNING @{author}: {name} is missing a " \
+                          f"docstring! " \
+
+            else:
+                comment = f"WARNING @{author}: {name}'s docstring is stale! " \
+                          f"It was last updated in {last_doc_commit}. " \
+                          f"Time behind: {time_behind}"
+
+            flags[lines[name]["function_lineno"]] = comment
 
     return flags

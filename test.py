@@ -31,7 +31,7 @@ def main():
                     'author': blame_range['commit']['name']
                 })
 
-    flags = maniac.run_flags(filepath, blame_output)
+    flags = maniac.run_flags(url, blame_output)
     print("flags: ", flags)
 
 
