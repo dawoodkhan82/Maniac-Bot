@@ -67,7 +67,7 @@ module.exports = app => {
 
       /*Once the stream is done (on 'end') we want to simply log the received data to the console.*/
       py.stdout.on('end', function(){
-        console.log('Comment back: ', dataString);
+        console.log('Commit Comment: ', dataString);
       });
 
       py.stdin.write(JSON.stringify(data));
