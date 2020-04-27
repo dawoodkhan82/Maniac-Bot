@@ -40,7 +40,12 @@ query blame($login: String!, $name: String!, $path: String!){
 
 module.exports = app => {
   app.on('push', async context => {
-    // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+
+    //////////////////////////////////////
+
+
+
+    //////////////////////////////////////
     const commits = context.payload.commits
     var filesChanged = []
     var i
@@ -54,8 +59,25 @@ module.exports = app => {
         name: context.payload.repository.name,
         path: filesChanged[i]
       })
-      // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
       // console.log(blameResponse['repositoryOwner']['repository']['object']['blame']['ranges'][0]['commit'])
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+
+      var spawn = require('child_process').spawn,
+      py    = spawn('python', ['test.py']),
+      data = blameResponse,
+      dataString = '';
+
+      py.stdout.on('data', function(data){
+        dataString = data.toString();
+      });
+
+      /*Once the stream is done (on 'end') we want to simply log the received data to the console.*/
+      py.stdout.on('end', function(){
+        console.log('Comment back: ', dataString);
+      });
+
+      py.stdin.write(JSON.stringify(data));
+      py.stdin.end();
     }
   })
 }
