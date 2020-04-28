@@ -69,10 +69,9 @@ module.exports = app => {
 
       /*Once the stream is done (on 'end') we want to simply log the received data to the console.*/
       py.stdout.on('end', function(){
-        const JSONDataString = JSON.parse(dataString)
-        const params = context.repo({ commit_sha: context.payload.head_commit.id, body: JSONDataString, path: filesChanged[i], position: 1, line: 6 })
+        const params = context.repo({ commit_sha: context.payload.head_commit.id, body: dataString.slice(5, 157), path: filesChanged[i], position: 1, line: 6 })
         context.github.repos.createCommitComment(params)
-        console.log('Commit Comment: ', JSONDataString);
+        console.log('Commit Comment: ', dataString);
       });
 
       py.stdin.write(contents['data']['download_url']);
