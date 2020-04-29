@@ -118,6 +118,72 @@ def get_last_doc_commit(blame_output, lines, name, doc_index):
     return last_doc_commit
 
 
+def save_flags(lines, blame_output):
+    stale_docs, missing_docs, passed = [], [], []
+    saved_flags = {}
+    for name in lines.keys():
+        latest_doc_date, latest_code_date, doc_index, code_index = get_dates(blame_output, lines, name)
+        if not latest_doc_date:
+            missing = True
+            stale = True
+            time_behind = None
+            last_doc_commit = None
+            author = get_author(blame_output, lines, name, code_index)
+
+        elif latest_code_date > latest_doc_date:
+            stale = True
+            missing = False
+            time_behind = latest_code_date - latest_doc_date
+            last_doc_commit = get_last_doc_commit(blame_output, lines, name,
+                                                  doc_index)
+            author = get_author(blame_output, lines, name, code_index)
+
+        else:
+            stale = False
+            missing = False
+            time_behind = None
+            last_doc_commit = None
+            author = None
+
+        saved_flags[name] = {
+            "is_stale": stale,
+            "is_missing": missing,
+            "time_behind": time_behind,
+            "last_doc_commit": last_doc_commit,
+            "code_user": author
+        }
+
+    for fn in saved_flags.keys():
+        if saved_flags[fn]["missing"]:
+            missing_docs.append(f"{fn} |"
+                                f" CODE UPDATED BY: {code_user}")
+        elif saved_flags[fn]["stale"]:
+            time_behind = saved_flags[fn]["time_behind"]
+            last_doc_commit = saved_flags[fn]["last_doc_commit"]
+            code_user = saved_flags[fn]["code_user"]
+
+            stale_docs.append(f"{fn} | TIME BEHIND: "
+                        f"{time_behind} | LAST DOC COMMIT: "
+                        f"{last_doc_commit} "
+                        f"| CODE UPDATED BY: {code_user}")
+        else:
+            passed.append(f"{fn} ")
+
+    with open(FLAGS_TEXT_PATH, 'w') as f:
+        f.write("STALE DOCSTRINGS:\n")
+        f.write("-"*len("STALE DOCSTRINGS:") + "\n")
+        for item in stale_docs:
+            f.write("%s\n" % item)
+        f.write("\nMISSING DOCSTRINGS:\n")
+        f.write("-" * len("MISSING DOCSTRINGS:") + "\n")
+        for item in missing_docs:
+            f.write("%s\n" % item)
+        f.write("\nUP TO DATE:\n")
+        f.write("-" * len("UP TO DATE:") + "\n")
+        for item in passed:
+            f.write("%s\n" % item)
+
+
 def run_flags(url, blame_output):
 
     filename = download_file(url)
@@ -163,6 +229,7 @@ def run_flags(url, blame_output):
                           f"It was last updated in {last_doc_commit}. " \
                           f"Time behind: {time_behind}"
 
-            flags[lines[name]["function_lineno"]] = comment
+            flags[str(lines[name]["function_lineno"])] = comment
 
+    save_flags(lines, blame_output)
     return flags
