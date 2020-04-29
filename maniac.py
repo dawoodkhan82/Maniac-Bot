@@ -229,7 +229,7 @@ def run_flags(url, blame_output):
                           f"It was last updated in {last_doc_commit}. " \
                           f"Time behind: {time_behind}"
 
-            flags[str(lines[name]["function_lineno"])] = comment
+            flags[lines[name]["function_lineno"]] = comment
 
     save_flags(lines, blame_output)
     return flags
