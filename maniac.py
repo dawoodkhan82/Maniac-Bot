@@ -154,11 +154,12 @@ def run_flags(url, blame_output):
 
         if stale:
             if missing:
-                comment = f"WARNING @{author}: {name} is missing a " \
+                comment = f"WARNING @{author}: `{name}` is missing a " \
                           f"docstring! " \
 
             else:
-                comment = f"WARNING @{author}: {name}'s docstring is stale! " \
+                comment = f"WARNING @{author}: `{name}`'s docstring is " \
+                          f"stale! " \
                           f"It was last updated in {last_doc_commit}. " \
                           f"Time behind: {time_behind}"
 
