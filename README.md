@@ -1,1 +1,1 @@
-# Maniac-Bot-New
+# Maniac-Bot
