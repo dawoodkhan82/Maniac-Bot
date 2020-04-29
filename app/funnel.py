@@ -36,7 +36,6 @@ def main():
                     'date': blame_range['commit']['authoredDate'],
                     'author': blame_range['commit']['author']['name']
                 })
-
     parsedURL = urlparse(file_url_string)
     flags = maniac.run_flags(parsedURL.geturl(), blame_output)
     print(flags)
