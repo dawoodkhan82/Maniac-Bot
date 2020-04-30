@@ -59,7 +59,7 @@ module.exports = app => {
       const contents = await context.github.repos.getContents(params)
 
       var spawn = require('child_process').spawn,
-      py    = spawn('python', ['test.py']),
+      py    = spawn('python', ['funnel.py']),
       data = blameResponse,
       dataString = '';
 
@@ -69,10 +69,7 @@ module.exports = app => {
 
       /*Once the stream is done (on 'end') we want to simply log the received data to the console.*/
       py.stdout.on('end', function(){
-        console.log('**********************')
-        console.log(JSON.parse(dataString))
-        console.log('@@@@@@@@@@@@@@@@@@@@@')
-        const params = context.repo({ commit_sha: context.payload.head_commit.id, body: dataString.slice(5, 157), path: filesChanged[i], position: 1, line: 1 })
+        const params = context.repo({ commit_sha: context.payload.head_commit.id, body: dataString, path: filesChanged[i], position: 1, line: 1 })
         context.github.repos.createCommitComment(params)
         console.log('Commit Comment: ', dataString);
       });
