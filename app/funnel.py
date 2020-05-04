@@ -1,17 +1,25 @@
-import sys, json, maniac
+import sys
+import json
+from app import maniac
 from urllib.parse import urlparse
 
 
 #Read data from stdin
 def read_in():
+    """
+    Reads data from stdin. Since our input would only be having one line,
+    parse our JSON data from that
+    :return: file url, json obj of git blame response
+    """
     lines = sys.stdin.readlines()
-    #Since our input would only be having one line, parse our JSON data from that
     return lines[0], json.loads(lines[1])
 
+
 def main():
-    #get our data as an array from read_in()
-    #file is download_url string for file contents
-    #data is json object of git blame response:
+    """
+    get file_url, blame response data from read_in()
+    :return:
+    """
 
     file_url_string, data = read_in()
 
