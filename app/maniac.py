@@ -154,10 +154,10 @@ def save_flags(lines, blame_output):
         }
 
     for fn in saved_flags.keys():
-        if saved_flags[fn]["missing"]:
+        if saved_flags[fn]["is_missing"]:
             missing_docs.append(f"{fn} |"
                                 f" CODE UPDATED BY: {code_user}")
-        elif saved_flags[fn]["stale"]:
+        elif saved_flags[fn]["is_stale"]:
             time_behind = saved_flags[fn]["time_behind"]
             last_doc_commit = saved_flags[fn]["last_doc_commit"]
             code_user = saved_flags[fn]["code_user"]
@@ -185,7 +185,6 @@ def save_flags(lines, blame_output):
 
 
 def run_flags(url, blame_output):
-
     filename = download_file(url)
     with open(filename) as file:
         source = file.read()

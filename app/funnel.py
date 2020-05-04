@@ -1,6 +1,4 @@
-import sys
-import json
-from app import maniac
+import maniac
 from urllib.parse import urlparse
 
 
@@ -22,7 +20,6 @@ def main():
     """
 
     file_url_string, data = read_in()
-
     blame_ranges = data['repositoryOwner']['repository']['object'][
             'blame']['ranges']
 
@@ -44,9 +41,10 @@ def main():
                     'date': blame_range['commit']['authoredDate'],
                     'author': blame_range['commit']['author']['name']
                 })
+
     parsedURL = urlparse(file_url_string)
     flags = maniac.run_flags(parsedURL.geturl(), blame_output)
-    print(flags)
+    print(json.dumps(flags))
 
 #start process
 if __name__ == '__main__':

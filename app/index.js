@@ -3,13 +3,7 @@
  * @param {import('probot').Application} app
  */
 
-const addComment = `
-    mutation comment($id: ID!, $body: String!) {
-      addComment(input: {subjectId: $id, body: $body}) {
-        clientMutationId
-      }
-    }
-  `
+let {PythonShell} = require('python-shell')
 
 const blame = `
 query blame($login: String!, $name: String!, $path: String!){
@@ -54,30 +48,31 @@ module.exports = app => {
         path: filesChanged[i]
       })
 
-      // console.log(blameResponse['repositoryOwner']['repository']['object']['blame']['ranges'][0]['commit'])
       const params = context.repo({ path: filesChanged[i] })
       const contents = await context.github.repos.getContents(params)
 
-      var spawn = require('child_process').spawn,
-      py    = spawn('python', ['funnel.py']),
+      let pyshell = new PythonShell('funnel.py');
       data = blameResponse,
       dataString = '';
 
-      py.stdout.on('data', function(data){
+
+      pyshell.send(contents['data']['download_url']);
+      pyshell.send(JSON.stringify(data));
+
+
+      pyshell.on('message', function (data) {
         dataString += data.toString();
+        dataString = JSON.parse(dataString)
       });
 
-      /*Once the stream is done (on 'end') we want to simply log the received data to the console.*/
-      py.stdout.on('end', function(){
-        const params = context.repo({ commit_sha: context.payload.head_commit.id, body: dataString, path: filesChanged[i], position: 1, line: 1 })
+      pyshell.end(function (err,code,signal) {
+        if (err) throw err;
+        const params = context.repo({ commit_sha: context.payload.head_commit.id, body: dataString['6'], path: filesChanged[i], position: 1, line: 1 })
         context.github.repos.createCommitComment(params)
-        console.log('Commit Comment: ', dataString);
+        console.log('The exit code was: ' + code);
+        console.log('The exit signal was: ' + signal);
+        console.log('finished');
       });
-
-      py.stdin.write(contents['data']['download_url']);
-      py.stdin.write('\n')
-      py.stdin.write(JSON.stringify(data));
-      py.stdin.end();
     }
   })
 }
