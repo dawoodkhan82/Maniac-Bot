@@ -1,4 +1,5 @@
-import sys, json, maniac
+import sys, json
+import maniac
 from urllib.parse import urlparse
 
 
@@ -12,9 +13,7 @@ def main():
     #get our data as an array from read_in()
     #file is download_url string for file contents
     #data is json object of git blame response:
-
     file_url_string, data = read_in()
-
     blame_ranges = data['repositoryOwner']['repository']['object'][
             'blame']['ranges']
 
@@ -36,9 +35,10 @@ def main():
                     'date': blame_range['commit']['authoredDate'],
                     'author': blame_range['commit']['author']['name']
                 })
+
     parsedURL = urlparse(file_url_string)
     flags = maniac.run_flags(parsedURL.geturl(), blame_output)
-    print(flags)
+    print(json.dumps(flags))
 
 #start process
 if __name__ == '__main__':
