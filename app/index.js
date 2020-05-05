@@ -32,6 +32,7 @@ query blame($login: String!, $name: String!, $path: String!){
 }
 `
 
+
 module.exports = app => {
   app.on('push', async context => {
     const commits = context.payload.commits
