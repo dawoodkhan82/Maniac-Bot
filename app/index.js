@@ -55,10 +55,8 @@ module.exports = app => {
       data = blameResponse,
       dataString = '';
 
-
       pyshell.send(contents['data']['download_url']);
       pyshell.send(JSON.stringify(data));
-
 
       pyshell.on('message', function (data) {
         dataString += data.toString();
