@@ -1,5 +1,0 @@
-build:
-  docker:
-    web: app/Dockerfile
-run:
-  web: docker run --env-file app/.env -d maniac-bot
