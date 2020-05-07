@@ -1,9 +1,12 @@
 from datetime import datetime
 import ast
 import urllib.request
+import requests
+import json
 
+API_ENDPOINT = 'http://localhost:8000/maniac/'
+REPO_NAME = 'Maniac-Bot-Test'
 
-FLAGS_TEXT_PATH = 'flags.txt'
 TEST_FILE_PATH = 'test_file.py'
 
 NODE_TYPES = {
@@ -118,11 +121,11 @@ def get_last_doc_commit(blame_output, lines, name, doc_index):
     return last_doc_commit
 
 
-def save_flags(lines, blame_output):
-    stale_docs, missing_docs, passed = [], [], []
+def save_flags(lines, blame_output, file_path):
     saved_flags = {}
     for name in lines.keys():
-        latest_doc_date, latest_code_date, doc_index, code_index = get_dates(blame_output, lines, name)
+        latest_doc_date, latest_code_date, doc_index, code_index = \
+                                        get_dates(blame_output, lines, name)
         if not latest_doc_date:
             missing = True
             stale = True
@@ -146,11 +149,12 @@ def save_flags(lines, blame_output):
             author = None
 
         saved_flags[name] = {
+            "file_path": file_path,
             "is_stale": stale,
             "is_missing": missing,
             "time_behind": time_behind,
             "last_doc_commit": last_doc_commit,
-            "code_user": author
+            "code_author": author
         }
 
     for fn in saved_flags.keys():
@@ -186,6 +190,12 @@ def save_flags(lines, blame_output):
         for item in passed:
             f.write("%s\n" % item)
 
+    # TODO(aliabd): fix this
+    data = json.dumps(saved_flags, indent=4, sort_keys=True, default=str)
+
+    r = requests.post(url=API_ENDPOINT + REPO_NAME + '/commit/',
+                      data=data)
+
 
 def run_flags(url, blame_output):
     filename = download_file(url)
@@ -196,7 +206,8 @@ def run_flags(url, blame_output):
     flags = {}
 
     for name in lines.keys():
-        latest_doc_date, latest_code_date, doc_index, code_index = get_dates(blame_output, lines, name)
+        latest_doc_date, latest_code_date, doc_index, code_index = \
+                                        get_dates(blame_output, lines, name)
 
         if not latest_doc_date:
             missing = True
@@ -234,5 +245,5 @@ def run_flags(url, blame_output):
 
             flags[lines[name]["function_lineno"]] = comment
 
-    save_flags(lines, blame_output)
+    save_flags(lines, blame_output, url)
     return flags
