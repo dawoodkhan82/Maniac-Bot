@@ -44,6 +44,7 @@ def main():
 
     parsedURL = urlparse(file_url_string)
     flags = maniac.run_flags(parsedURL.geturl(), blame_output)
+
     print(json.dumps(flags))
 
 #start process

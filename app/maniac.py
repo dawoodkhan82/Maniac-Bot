@@ -1,9 +1,12 @@
 from datetime import datetime
 import ast
 import urllib.request
+import requests
+import json
 
+API_ENDPOINT = 'http://localhost:8000/maniac/'
+REPO_NAME = 'Maniac-Bot-Test'
 
-FLAGS_TEXT_PATH = 'flags.txt'
 TEST_FILE_PATH = 'test_file.py'
 
 NODE_TYPES = {
@@ -118,11 +121,11 @@ def get_last_doc_commit(blame_output, lines, name, doc_index):
     return last_doc_commit
 
 
-def save_flags(lines, blame_output):
-    stale_docs, missing_docs, passed = [], [], []
+def save_flags(lines, blame_output, file_path):
     saved_flags = {}
     for name in lines.keys():
-        latest_doc_date, latest_code_date, doc_index, code_index = get_dates(blame_output, lines, name)
+        latest_doc_date, latest_code_date, doc_index, code_index = \
+                                        get_dates(blame_output, lines, name)
         if not latest_doc_date:
             missing = True
             stale = True
@@ -146,42 +149,19 @@ def save_flags(lines, blame_output):
             author = None
 
         saved_flags[name] = {
+            "file_path": file_path,
             "is_stale": stale,
             "is_missing": missing,
             "time_behind": time_behind,
             "last_doc_commit": last_doc_commit,
-            "code_user": author
+            "code_author": author
         }
 
-    for fn in saved_flags.keys():
-        if saved_flags[fn]["is_missing"]:
-            missing_docs.append(f"{fn} |"
-                                f" CODE UPDATED BY: {code_user}")
-        elif saved_flags[fn]["is_stale"]:
-            time_behind = saved_flags[fn]["time_behind"]
-            last_doc_commit = saved_flags[fn]["last_doc_commit"]
-            code_user = saved_flags[fn]["code_user"]
+    # TODO(aliabd): fix this
+    data = json.dumps(saved_flags, indent=4, sort_keys=True, default=str)
 
-            stale_docs.append(f"{fn} | TIME BEHIND: "
-                        f"{time_behind} | LAST DOC COMMIT: "
-                        f"{last_doc_commit} "
-                        f"| CODE UPDATED BY: {code_user}")
-        else:
-            passed.append(f"{fn} ")
-
-    with open(FLAGS_TEXT_PATH, 'w') as f:
-        f.write("STALE DOCSTRINGS:\n")
-        f.write("-"*len("STALE DOCSTRINGS:") + "\n")
-        for item in stale_docs:
-            f.write("%s\n" % item)
-        f.write("\nMISSING DOCSTRINGS:\n")
-        f.write("-" * len("MISSING DOCSTRINGS:") + "\n")
-        for item in missing_docs:
-            f.write("%s\n" % item)
-        f.write("\nUP TO DATE:\n")
-        f.write("-" * len("UP TO DATE:") + "\n")
-        for item in passed:
-            f.write("%s\n" % item)
+    r = requests.post(url=API_ENDPOINT + REPO_NAME + '/commit/',
+                      data=data)
 
 
 def run_flags(url, blame_output):
@@ -193,7 +173,8 @@ def run_flags(url, blame_output):
     flags = {}
 
     for name in lines.keys():
-        latest_doc_date, latest_code_date, doc_index, code_index = get_dates(blame_output, lines, name)
+        latest_doc_date, latest_code_date, doc_index, code_index = \
+                                        get_dates(blame_output, lines, name)
 
         if not latest_doc_date:
             missing = True
@@ -230,5 +211,5 @@ def run_flags(url, blame_output):
 
             flags[lines[name]["function_lineno"]] = comment
 
-    save_flags(lines, blame_output)
+    save_flags(lines, blame_output, url)
     return flags

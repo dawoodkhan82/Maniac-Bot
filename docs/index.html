@@ -7,6 +7,15 @@
 </head>
 <body>
 <center><h2 style="color: darkgreen">Maniac-Bot-Test</h2></center>
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
 <table>
   <caption>Stale Docstrings:</caption>
   <thead>
