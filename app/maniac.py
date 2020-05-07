@@ -155,19 +155,22 @@ def save_flags(lines, blame_output):
 
     for fn in saved_flags.keys():
         if saved_flags[fn]["is_missing"]:
-            missing_docs.append(f"{fn} |"
-                                f" CODE UPDATED BY: {code_user}")
+            code_user = saved_flags[fn]["code_user"]
+            missing_docs.append('{fn} | CODE UPDATED BY: {code_user}'
+                                .format(fn=fn, code_user=code_user))
         elif saved_flags[fn]["is_stale"]:
             time_behind = saved_flags[fn]["time_behind"]
             last_doc_commit = saved_flags[fn]["last_doc_commit"]
             code_user = saved_flags[fn]["code_user"]
 
-            stale_docs.append(f"{fn} | TIME BEHIND: "
-                        f"{time_behind} | LAST DOC COMMIT: "
-                        f"{last_doc_commit} "
-                        f"| CODE UPDATED BY: {code_user}")
+            stale_docs.append('{fn} | TIME BEHIND: {time_behind} | LAST DOC '
+                              'COMMIT: {last_doc_commit} | CODE UPDATED BY: '
+                              '{code_user}'
+                              .format(fn=fn, time_behind=time_behind,
+                                      last_doc_commit=last_doc_commit,
+                                      code_user=code_user))
         else:
-            passed.append(f"{fn} ")
+            passed.append('{fn} '.format(fn=fn))
 
     with open(FLAGS_TEXT_PATH, 'w') as f:
         f.write("STALE DOCSTRINGS:\n")
@@ -219,14 +222,15 @@ def run_flags(url, blame_output):
 
         if stale:
             if missing:
-                comment = f"WARNING @dawoodkhan82: `{name}` is missing a " \
-                          f"docstring! " \
+                comment = 'WARNING @dawoodkhan82: `{name}` is missing a ' \
+                          'docstring!'.format(name=name)
 
             else:
-                comment = f"WARNING @dawoodkhan82: `{name}`'s docstring is " \
-                          f"stale! " \
-                          f"It was last updated in {last_doc_commit}. " \
-                          f"Time behind: {time_behind}"
+                comment = 'WARNING @dawoodkhan82: `{name}``s docstring is ' \
+                          'stale! It was last updated in {last_doc_commit}. ' \
+                          'Time behind: {time_behind}'\
+                    .format(name=name, last_doc_commit=last_doc_commit,
+                            time_behind=time_behind)
 
             flags[lines[name]["function_lineno"]] = comment
 

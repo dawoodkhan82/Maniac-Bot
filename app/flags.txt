@@ -1,10 +1,10 @@
 STALE DOCSTRINGS:
 -----------------
-sum_function | TIME BEHIND: 5 days, 7:37:18 | LAST DOC COMMIT: e710b249ca032accc6012efc34b3985fbd00c3a5 | CODE UPDATED BY: Dawood Khan
+sum_function | TIME BEHIND: 7 days, 0:21:49 | LAST DOC COMMIT: e710b249ca032accc6012efc34b3985fbd00c3a5 | CODE UPDATED BY: Ali Abdalla
 
 MISSING DOCSTRINGS:
 -------------------
-no_docs | CODE UPDATED BY: Dawood Khan
+no_docs | CODE UPDATED BY: Ali Abdalla
 
 UP TO DATE:
 -----------
