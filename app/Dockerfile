@@ -19,4 +19,5 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-CMD [ "npm", "run", "dev" ]
+#CMD [ "npm", "run", "dev" ]
+CMD [ "node", "--max-old-space-size=4096", "main.js" ]

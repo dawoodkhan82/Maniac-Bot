@@ -1,7 +1,7 @@
 from datetime import datetime
 import ast
 import urllib.request
-import requests
+# import requests
 import json
 
 API_ENDPOINT = 'http://localhost:8000/maniac/'
