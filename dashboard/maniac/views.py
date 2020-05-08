@@ -4,11 +4,68 @@ from .models import Docstring
 from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime, timedelta
+from django.core.exceptions import ObjectDoesNotExist
+
+
 
 
 def index(request, repo_name):
-    return HttpResponse("Hello, world. You're at the maniac dashboard "
-                        f"for {repo_name}.")
+    try:
+        stale = Docstring.objects.get(is_stale=True)
+    except ObjectDoesNotExist:
+        stale = False
+    try:
+        missing = Docstring.objects.get(is_missing=True)
+    except ObjectDoesNotExist:
+        missing = False
+    try:
+        passed = Docstring.objects.get(is_stale=False, is_missing=False)
+    except ObjectDoesNotExist:
+        passed = False
+
+    stale_fns = []
+    if stale:
+        if isinstance(stale, list):
+            for obj in stale:
+                stale_fns.append([getattr(obj, "file_path"),
+                                  getattr(obj, "function_name"),
+                                  str(getattr(obj, "time_behind")),
+                                  getattr(obj, "last_doc_commit"),
+                                  getattr(obj, "code_author")])
+        else:
+            stale_fns.append([getattr(stale, "file_path"),
+                              getattr(stale, "function_name"),
+                              str(getattr(stale, "time_behind")),
+                              getattr(stale, "last_doc_commit"),
+                              getattr(stale, "code_author")])
+    missing_fns = []
+    if missing:
+        if isinstance(missing, list):
+            for obj in missing:
+                missing_fns.append([getattr(obj, "file_path"),
+                                    getattr(obj, "function_name"),
+                                    getattr(obj, "code_author")])
+        else:
+            missing_fns.append([getattr(missing, "file_path"),
+                                getattr(missing, "function_name"),
+                                getattr(missing, "code_author")])
+    passed_fns = []
+    if passed:
+        if isinstance(passed, list):
+            for obj in passed:
+                passed_fns.append([getattr(obj, "file_path"),
+                                  getattr(obj, "function_name"),
+                                  getattr(obj, "code_author")])
+        else:
+            passed_fns.append([getattr(passed, "file_path"),
+                               getattr(passed, "function_name"),
+                               getattr(passed, "code_author")])
+    print(stale_fns)
+
+    context = {'stale_fns': stale_fns, "missing_fns": missing_fns,
+               "passed_fns": passed_fns, "repo_name": repo_name}
+
+    return render(request, 'maniac/index.html', context)
 
 @csrf_exempt
 def commit(request, repo_name):
