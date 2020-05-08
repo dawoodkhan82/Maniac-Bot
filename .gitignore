@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # Private Key
-maniacbot.2020-04-26.private-key.pem
+app/maniacbot.2020-04-26.private-key.pem

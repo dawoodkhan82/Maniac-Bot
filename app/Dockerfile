@@ -5,7 +5,7 @@ RUN pip freeze > requirements.txt
 RUN pip install -r requirements.txt --no-cache-dir
 
 
-FROM node:latest
+FROM node:14.2.0
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -19,4 +19,5 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-CMD [ "npm", "run", "dev" ]
+#CMD [ "npm", "run", "dev" ]
+CMD [ "node", "--max-old-space-size=4096", "main.js" ]
