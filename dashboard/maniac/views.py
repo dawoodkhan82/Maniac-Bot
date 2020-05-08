@@ -11,21 +11,22 @@ from django.core.exceptions import ObjectDoesNotExist
 
 def index(request, repo_name):
     try:
-        stale = Docstring.objects.get(is_stale=True)
+        stale = Docstring.objects.filter(is_stale=True)
     except ObjectDoesNotExist:
         stale = False
     try:
-        missing = Docstring.objects.get(is_missing=True)
+        missing = Docstring.objects.filter(is_missing=True)
     except ObjectDoesNotExist:
         missing = False
     try:
-        passed = Docstring.objects.get(is_stale=False, is_missing=False)
+        passed = Docstring.objects.filter(is_stale=False, is_missing=False)
     except ObjectDoesNotExist:
         passed = False
 
     stale_fns = []
     if stale:
-        if isinstance(stale, list):
+        # if isinstance(stale, list):
+        if True:
             for obj in stale:
                 stale_fns.append([getattr(obj, "file_path"),
                                   getattr(obj, "function_name"),
@@ -40,25 +41,35 @@ def index(request, repo_name):
                               getattr(stale, "code_author")])
     missing_fns = []
     if missing:
-        if isinstance(missing, list):
+        # if isinstance(missing, list):
+        if True:
             for obj in missing:
                 missing_fns.append([getattr(obj, "file_path"),
                                     getattr(obj, "function_name"),
+                                    " ",
+                                    " ",
                                     getattr(obj, "code_author")])
         else:
             missing_fns.append([getattr(missing, "file_path"),
                                 getattr(missing, "function_name"),
+                                " ",
+                                " ",
                                 getattr(missing, "code_author")])
     passed_fns = []
     if passed:
-        if isinstance(passed, list):
+        # if isinstance(passed, list):
+        if True:
             for obj in passed:
                 passed_fns.append([getattr(obj, "file_path"),
                                   getattr(obj, "function_name"),
+                                   " ",
+                                   " ",
                                   getattr(obj, "code_author")])
         else:
             passed_fns.append([getattr(passed, "file_path"),
                                getattr(passed, "function_name"),
+                               " ",
+                               " ",
                                getattr(passed, "code_author")])
     print(stale_fns)
 
