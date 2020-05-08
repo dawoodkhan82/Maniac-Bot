@@ -1,7 +1,11 @@
-FROM node:latest
-RUN apt-get update || : && apt-get install python -y
-
+FROM python:3.8
 WORKDIR '.'
+RUN apt-get update || : && apt-get install python -y
+RUN pip freeze > requirements.txt
+RUN pip install -r requirements.txt --no-cache-dir
+
+
+FROM node:latest
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied

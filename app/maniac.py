@@ -157,39 +157,6 @@ def save_flags(lines, blame_output, file_path):
             "code_author": author
         }
 
-    for fn in saved_flags.keys():
-        if saved_flags[fn]["is_missing"]:
-            code_user = saved_flags[fn]["code_user"]
-            missing_docs.append('{fn} | CODE UPDATED BY: {code_user}'
-                                .format(fn=fn, code_user=code_user))
-        elif saved_flags[fn]["is_stale"]:
-            time_behind = saved_flags[fn]["time_behind"]
-            last_doc_commit = saved_flags[fn]["last_doc_commit"]
-            code_user = saved_flags[fn]["code_user"]
-
-            stale_docs.append('{fn} | TIME BEHIND: {time_behind} | LAST DOC '
-                              'COMMIT: {last_doc_commit} | CODE UPDATED BY: '
-                              '{code_user}'
-                              .format(fn=fn, time_behind=time_behind,
-                                      last_doc_commit=last_doc_commit,
-                                      code_user=code_user))
-        else:
-            passed.append('{fn} '.format(fn=fn))
-
-    with open(FLAGS_TEXT_PATH, 'w') as f:
-        f.write("STALE DOCSTRINGS:\n")
-        f.write("-"*len("STALE DOCSTRINGS:") + "\n")
-        for item in stale_docs:
-            f.write("%s\n" % item)
-        f.write("\nMISSING DOCSTRINGS:\n")
-        f.write("-" * len("MISSING DOCSTRINGS:") + "\n")
-        for item in missing_docs:
-            f.write("%s\n" % item)
-        f.write("\nUP TO DATE:\n")
-        f.write("-" * len("UP TO DATE:") + "\n")
-        for item in passed:
-            f.write("%s\n" % item)
-
     # TODO(aliabd): fix this
     data = json.dumps(saved_flags, indent=4, sort_keys=True, default=str)
 
@@ -237,7 +204,7 @@ def run_flags(url, blame_output):
                           'docstring!'.format(name=name)
 
             else:
-                comment = 'WARNING @dawoodkhan82: `{name}``s docstring is ' \
+                comment = 'WARNING @dawoodkhan82: `{name}`s docstring is ' \
                           'stale! It was last updated in {last_doc_commit}. ' \
                           'Time behind: {time_behind}'\
                     .format(name=name, last_doc_commit=last_doc_commit,
