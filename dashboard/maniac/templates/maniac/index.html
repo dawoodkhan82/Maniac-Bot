@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'maniac/index.css' %}">
+    <title>Flags</title>
+</head>
+<body>
+<center><h2 style="color: darkgreen">{{ repo_name }}</h2></center>
+<table>
+  <caption>Stale Docstrings:</caption>
+  <thead>
+    <tr>
+      <th scope="col">File</th>
+      <th scope="col">Function</th>
+      <th scope="col">Time Behind</th>
+      <th scope="col">Last Doc Commit</th>
+      <th scope="col">Code Updated By</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in stale_fns %}
+      {% cycle '<tr>' '' '' '' %}
+        {% for c in s %}
+            <td>{{ c }}</td>
+        {% endfor %}
+      {% cycle '' '' '' '</tr>' %}
+    {% endfor %}
+  </tbody>
+</table>
+<table>
+  <caption>Missing Docstrings:</caption>
+  <thead>
+    <tr>
+      <th scope="col">File</th>
+      <th scope="col">Function</th>
+      <th scope="col">Time Behind</th>
+      <th scope="col">Last Doc Commit</th>
+      <th scope="col">Code Updated By</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in results %}
+      {% cycle '<tr>' '' '' '' %}
+        <td>{{r.content}}</td>
+      {% cycle '' '' '' '</tr>' %}
+    {% endfor %}
+  </tbody>
+</table>
+<table>
+  <caption>Stale Docstrings:</caption>
+  <thead>
+    <tr>
+      <th scope="col">File</th>
+      <th scope="col">Function</th>
+      <th scope="col">Time Behind</th>
+      <th scope="col">Last Doc Commit</th>
+      <th scope="col">Code Updated By</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in results %}
+      {% cycle '<tr>' '' '' '' %}
+        <td>{{r.content}}</td>
+      {% cycle '' '' '' '</tr>' %}
+    {% endfor %}
+  </tbody>
+</table>
+</body>
+</html>
