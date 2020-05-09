@@ -1,13 +1,11 @@
 from datetime import datetime
 import ast
 import urllib.request
-# import requests
+import requests
 import json
 
-API_ENDPOINT = 'http://localhost:8000/maniac/'
+API_ENDPOINT = 'https://still-cliffs-15715.herokuapp.com/maniac/'
 REPO_NAME = 'Maniac-Bot-Test'
-
-TEST_FILE_PATH = 'test_file.py'
 
 NODE_TYPES = {
     ast.ClassDef: 'Class',
@@ -159,10 +157,10 @@ def save_flags(lines, blame_output, file_path):
 
     # TODO(aliabd): fix this
     #
-    # data = json.dumps(saved_flags, indent=4, sort_keys=True, default=str)
-    #
-    # r = requests.post(url=API_ENDPOINT + REPO_NAME + '/commit/',
-    #                   data=data)
+    data = json.dumps(saved_flags, indent=4, sort_keys=True, default=str)
+
+    r = requests.post(url=API_ENDPOINT + REPO_NAME + '/commit/',
+                      data=data)
 
 
 def run_flags(url, blame_output):

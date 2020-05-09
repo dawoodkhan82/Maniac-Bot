@@ -2,7 +2,7 @@ import requests
 import datetime
 import json
 
-API_ENDPOINT = 'http://localhost:8000/maniac/'
+API_ENDPOINT = 'https://still-cliffs-15715.herokuapp.com/maniac/'
 REPO_NAME = 'Maniac-Bot-Test'
 
 
