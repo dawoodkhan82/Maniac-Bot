@@ -2,12 +2,12 @@ FROM python:3.8
 
 WORKDIR '.'
 
-RUN apt-get install python3
-RUN apt-get install python3-pip
-RUN python3 --version
-RUN pip3 freeze > requirements.txt
-RUN pip3 install -r requirements.txt --no-cache-dir
+COPY . .
 
+RUN apt-get install python3
+RUN python3 --version
+RUN pip3 install -r requirements.txt --no-cache-dir
+RUN pip3 freeze > requirements.txt
 
 FROM node:14.2.0
 
@@ -20,8 +20,4 @@ RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
 
-# Bundle app source
-COPY . .
-
-#CMD [ "npm", "run", "dev" ]
 CMD [ "node", "--max-old-space-size=4096", "main.js" ]
