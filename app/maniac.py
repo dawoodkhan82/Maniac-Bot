@@ -4,13 +4,13 @@ import urllib.request
 import requests
 import json
 
-API_ENDPOINT = 'https://still-cliffs-15715.herokuapp.com/maniac/'
+API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/maniac/'
 REPO_NAME = 'Maniac-Bot-Test'
 
 NODE_TYPES = {
     ast.ClassDef: 'Class',
     ast.FunctionDef: 'Function/Method',
-    ast.AsyncFunctionDef: 'AsyncFunction/Method',
+    ast.AsyncFunctionDef: 'AsyncFunction/Method'
 }
 
 # blame_output = [{
