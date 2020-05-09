@@ -7,8 +7,6 @@ from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 
 
-
-
 def index(request, repo_name):
     try:
         stale = Docstring.objects.filter(is_stale=True)
@@ -25,58 +23,35 @@ def index(request, repo_name):
 
     stale_fns = []
     if stale:
-        # if isinstance(stale, list):
-        if True:
-            for obj in stale:
-                stale_fns.append([getattr(obj, "file_path"),
-                                  getattr(obj, "function_name"),
-                                  str(getattr(obj, "time_behind")),
-                                  getattr(obj, "last_doc_commit"),
-                                  getattr(obj, "code_author")])
-        else:
-            stale_fns.append([getattr(stale, "file_path"),
-                              getattr(stale, "function_name"),
-                              str(getattr(stale, "time_behind")),
-                              getattr(stale, "last_doc_commit"),
-                              getattr(stale, "code_author")])
+        for obj in stale:
+            stale_fns.append([getattr(obj, "file_path"),
+                              getattr(obj, "function_name"),
+                              str(getattr(obj, "time_behind")),
+                              getattr(obj, "last_doc_commit"),
+                              getattr(obj, "code_author")])
+
     missing_fns = []
     if missing:
-        # if isinstance(missing, list):
-        if True:
-            for obj in missing:
-                missing_fns.append([getattr(obj, "file_path"),
-                                    getattr(obj, "function_name"),
-                                    " ",
-                                    " ",
-                                    getattr(obj, "code_author")])
-        else:
-            missing_fns.append([getattr(missing, "file_path"),
-                                getattr(missing, "function_name"),
+        for obj in missing:
+            missing_fns.append([getattr(obj, "file_path"),
+                                getattr(obj, "function_name"),
                                 " ",
                                 " ",
-                                getattr(missing, "code_author")])
+                                getattr(obj, "code_author")])
     passed_fns = []
     if passed:
-        # if isinstance(passed, list):
-        if True:
-            for obj in passed:
-                passed_fns.append([getattr(obj, "file_path"),
-                                  getattr(obj, "function_name"),
-                                   " ",
-                                   " ",
-                                  getattr(obj, "code_author")])
-        else:
-            passed_fns.append([getattr(passed, "file_path"),
-                               getattr(passed, "function_name"),
+        for obj in passed:
+            passed_fns.append([getattr(obj, "file_path"),
+                              getattr(obj, "function_name"),
                                " ",
                                " ",
-                               getattr(passed, "code_author")])
-    print(stale_fns)
+                              getattr(obj, "code_author")])
 
     context = {'stale_fns': stale_fns, "missing_fns": missing_fns,
                "passed_fns": passed_fns, "repo_name": repo_name}
 
     return render(request, 'maniac/index.html', context)
+
 
 @csrf_exempt
 def commit(request, repo_name):
