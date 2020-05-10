@@ -4,7 +4,7 @@ WORKDIR '.'
 
 COPY . .
 
-ENV PATH /usr/local/bin:$PATH
+ENV PATH /usr/bin:$PATH
 
 RUN apt-get install python3
 RUN python3 --version
