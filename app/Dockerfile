@@ -4,8 +4,11 @@ WORKDIR '.'
 
 COPY . .
 
+ENV PATH /usr/bin:$PATH
+
 RUN apt-get install python3
 RUN python3 --version
+RUN apt-get update && apt-get install -y python3-pip
 RUN pip3 install -r requirements.txt --no-cache-dir
 RUN pip3 freeze > requirements.txt
 RUN pip3 list
