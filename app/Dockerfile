@@ -8,6 +8,7 @@ RUN apt-get install python3
 RUN python3 --version
 RUN pip3 install -r requirements.txt --no-cache-dir
 RUN pip3 freeze > requirements.txt
+RUN pip3 list
 
 FROM node:14.2.0
 
