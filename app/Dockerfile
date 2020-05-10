@@ -3,7 +3,9 @@ FROM python:3.8
 WORKDIR '.'
 
 COPY . .
-    
+
+ENV PATH /usr/local/bin:$PATH
+
 RUN apt-get install python3
 RUN python3 --version
 RUN apt-get update && apt-get install -y python3-pip
