@@ -3,9 +3,10 @@ FROM python:3.8
 WORKDIR '.'
 
 COPY . .
-
+    
 RUN apt-get install python3
 RUN python3 --version
+RUN apt-get update && apt-get install -y python3-pip
 RUN pip3 install -r requirements.txt --no-cache-dir
 RUN pip3 freeze > requirements.txt
 
