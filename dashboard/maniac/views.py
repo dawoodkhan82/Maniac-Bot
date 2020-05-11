@@ -13,7 +13,7 @@ def index(request, repo_name):
     except ObjectDoesNotExist:
         stale = False
     try:
-        missing = Docstring.objects.filter(is_missing=True)
+        missing = Docstring.objects.filter(is_missing=True, is_stale=False)
     except ObjectDoesNotExist:
         missing = False
     try:
