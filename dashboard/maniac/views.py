@@ -66,7 +66,7 @@ def commit(request, repo_name):
             time_behind = data[key]["time_behind"]
             is_stale = data[key]["is_stale"]
             is_missing = data[key]["is_missing"]
-            if is_stale:
+            if is_stale and not is_missing:
                 # TODO(aliabd): fix this
                 t = datetime.strptime(time_behind, "%d day, %H:%M:%S")
                 time_behind = timedelta(days=t.day, hours=t.hour, minutes=t.minute,
