@@ -50,6 +50,9 @@
      {% for m in missing_fns %}
      <tr>
         {% for c in m %}
+         {% if forloop.counter0 == 0 %}
+            <td style="color: maroon"><a href="{{ c }}">file url</a></td>
+         {% else %}
             <td style="color: maroon">{{ c }}</td>
         {% endfor %}
      </tr>
@@ -71,6 +74,9 @@
      {% for p in passed_fns %}
   <tr>
         {% for c in p %}
+        {% if forloop.counter0 == 0 %}
+            <td style="color: maroon"><a href="{{ c }}">file url</a></td>
+         {% else %}
             <td style="color: darkgreen">{{ c }}</td>
         {% endfor %}
   </tr>
