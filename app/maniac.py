@@ -144,7 +144,7 @@ def save_flags(lines, blame_output, file_path):
             missing = False
             time_behind = None
             last_doc_commit = None
-            author = None
+            author = get_author(blame_output, lines, name, code_index)
 
         saved_flags[name] = {
             "file_path": file_path,

@@ -64,16 +64,20 @@ def commit(request, repo_name):
             file_path = data[key]["file_path"]
             function_name = key
             time_behind = data[key]["time_behind"]
-
-            #TODO(aliabd): fix this
-            t = datetime.strptime(time_behind, "%d day, %H:%M:%S")
-            time_behind = timedelta(days=t.day, hours=t.hour, minutes=t.minute,
-                              seconds=t.second)
-
-            last_doc_commit = data[key]["last_doc_commit"]
-            code_author = data[key]["code_author"]
             is_stale = data[key]["is_stale"]
             is_missing = data[key]["is_missing"]
+            if is_stale:
+                # TODO(aliabd): fix this
+                t = datetime.strptime(time_behind, "%d day, %H:%M:%S")
+                time_behind = timedelta(days=t.day, hours=t.hour, minutes=t.minute,
+                                  seconds=t.second)
+
+                last_doc_commit = data[key]["last_doc_commit"]
+            else:
+                time_behind = None
+                last_doc_commit = None
+            code_author = data[key]["code_author"]
+
 
             d = Docstring(file_path=file_path, function_name=function_name,
                           time_behind=time_behind,
