@@ -23,7 +23,9 @@
      {% for s in stale_fns %}
      <tr>
         {% for c in s %}
-          {% if forloop.counter0 == 3 %}
+          {% if forloop.counter0 == 0 %}
+            <td style="color: maroon"><a href="{{ c }}">file url</a></td>
+          {% elif forloop.counter0 == 3 %}
             <td style="color: maroon"><a href="{{ c }}">commit</a></td>
           {% else %}
             <td style="color: maroon">{{ c }}</td>
