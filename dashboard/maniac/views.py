@@ -75,7 +75,10 @@ def commit(request, repo_name):
                 time_behind = timedelta(days=t.day, hours=t.hour, minutes=t.minute,
                                   seconds=t.second)
 
-                last_doc_commit = data[key]["last_doc_commit"]
+                last_doc_commit = "last_doc_commit = " \
+                                  "https://github.com/dawoodkhan82/" \
+                                  "Maniac-Bot-Test/commit/" + \
+                                  data[key]["last_doc_commit"]
             else:
                 time_behind = None
                 last_doc_commit = None
