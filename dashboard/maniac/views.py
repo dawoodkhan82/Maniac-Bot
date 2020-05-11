@@ -9,11 +9,11 @@ from django.core.exceptions import ObjectDoesNotExist
 
 def index(request, repo_name):
     try:
-        stale = Docstring.objects.filter(is_stale=True)
+        stale = Docstring.objects.filter(is_stale=True, is_missing=False)
     except ObjectDoesNotExist:
         stale = False
     try:
-        missing = Docstring.objects.filter(is_missing=True, is_stale=False)
+        missing = Docstring.objects.filter(is_missing=True)
     except ObjectDoesNotExist:
         missing = False
     try:
