@@ -83,11 +83,14 @@ def commit(request, repo_name):
                 last_doc_commit = None
             code_author = data[key]["code_author"]
 
+            obj, created = Docstring.objects.update_or_create(
+                function_name=function_name,
+                defaults={"file_path": file_path,
+                          "function_name": function_name,
+                          "time_behind": time_behind,
+                          "last_doc_commit": last_doc_commit,
+                          "code_author": code_author,
+                          "is_stale": is_stale, "is_missing": is_missing},
+            )
 
-            d = Docstring(file_path=file_path, function_name=function_name,
-                          time_behind=time_behind,
-                          last_doc_commit=last_doc_commit,
-                          code_author=code_author,
-                          is_stale=is_stale, is_missing=is_missing)
-            d.save()
     return HttpResponse("Success!")
