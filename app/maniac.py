@@ -4,13 +4,13 @@ import urllib.request
 import requests
 import json
 
-API_ENDPOINT = 'https://still-cliffs-15715.herokuapp.com/maniac/'
+API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/maniac/'
 REPO_NAME = 'Maniac-Bot-Test'
 
 NODE_TYPES = {
     ast.ClassDef: 'Class',
     ast.FunctionDef: 'Function/Method',
-    ast.AsyncFunctionDef: 'AsyncFunction/Method',
+    ast.AsyncFunctionDef: 'AsyncFunction/Method'
 }
 
 # blame_output = [{
@@ -144,7 +144,7 @@ def save_flags(lines, blame_output, file_path):
             missing = False
             time_behind = None
             last_doc_commit = None
-            author = None
+            author = get_author(blame_output, lines, name, code_index)
 
         saved_flags[name] = {
             "file_path": file_path,
@@ -161,6 +161,7 @@ def save_flags(lines, blame_output, file_path):
 
     r = requests.post(url=API_ENDPOINT + REPO_NAME + '/commit/',
                       data=data)
+
 
 
 def run_flags(url, blame_output):
