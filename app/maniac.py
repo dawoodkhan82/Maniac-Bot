@@ -4,8 +4,9 @@ import urllib.request
 import requests
 import json
 
-API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/maniac/'
+API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
 REPO_NAME = 'Maniac-Bot-Test'
+HASH = "b819f1f94ffe425bbffa711e66bdbe47"
 
 NODE_TYPES = {
     ast.ClassDef: 'Class',
@@ -159,9 +160,8 @@ def save_flags(lines, blame_output, file_path):
     #
     data = json.dumps(saved_flags, indent=4, sort_keys=True, default=str)
 
-    r = requests.post(url=API_ENDPOINT + REPO_NAME + '/commit/',
+    r = requests.post(url=API_ENDPOINT + REPO_NAME + '/' + HASH + '/commit/',
                       data=data)
-
 
 
 def run_flags(url, blame_output):
