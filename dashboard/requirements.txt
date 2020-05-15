@@ -2,3 +2,4 @@ django
 django-heroku
 bower
 gunicorn
+uuid
