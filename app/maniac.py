@@ -4,7 +4,7 @@ import urllib.request
 import requests
 import json
 
-API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/maniac/'
+API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
 REPO_NAME = 'Maniac-Bot-Test'
 
 NODE_TYPES = {
