@@ -50,10 +50,12 @@ module.exports = app => {
       data = blameResponse,
       dataString = '';
 
+      const params = context.repo({path: filesChanged['data'][i]['filename']})
+      const contents = await context.github.repos.getContents(params)
+
       pyshell.send(context.payload.repository.name);
       pyshell.send(filesChanged['data'][i]['filename']);
-      pyshell.send(filesChanged['data'][i]['blob_url']);
-      pyshell.send(filesChanged['data'][i]['raw_url']);
+      pyshell.send(contents['data']['download_url']);
       pyshell.send(JSON.stringify(data));
 
       pyshell.on('message', function (data) {
