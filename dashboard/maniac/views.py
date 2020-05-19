@@ -20,15 +20,20 @@ def index(request, repo_name, random_hash):
         return HttpResponse("Sorry! This link is invalid!")
     else:
         try:
-            stale = Docstring.objects.filter(is_stale=True, is_missing=False)
+            stale = Docstring.objects.filter(repo_name=repo_name,
+                                             is_stale=True,
+                                             is_missing=False)
         except ObjectDoesNotExist:
             stale = False
         try:
-            missing = Docstring.objects.filter(is_missing=True)
+            missing = Docstring.objects.filter(repo_name=repo_name,
+                                               is_missing=True)
         except ObjectDoesNotExist:
             missing = False
         try:
-            passed = Docstring.objects.filter(is_stale=False, is_missing=False)
+            passed = Docstring.objects.filter(repo_name=repo_name,
+                                              is_stale=False,
+                                              is_missing=False)
         except ObjectDoesNotExist:
             passed = False
 
@@ -103,7 +108,8 @@ def commit(request, repo_name, random_hash):
 
                 obj, created = Docstring.objects.update_or_create(
                     function_name=function_name,
-                    defaults={"file_path": file_path,
+                    defaults={"repo_name": repo_name,
+                              "file_path": file_path,
                               "function_name": function_name,
                               "time_behind": time_behind,
                               "last_doc_commit": last_doc_commit,

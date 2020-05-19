@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Docstring(models.Model):
+    repo_name = models.CharField(max_length=50)
     file_path = models.CharField(max_length=3000)
     function_name = models.CharField(max_length=200)
     time_behind = models.DurationField(blank=True, null=True)

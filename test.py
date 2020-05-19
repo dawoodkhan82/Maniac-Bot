@@ -3,10 +3,10 @@ import datetime
 import json
 import sys
 
-# API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
-API_ENDPOINT = 'http://localhost:8000/'
+API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
+# API_ENDPOINT = 'http://localhost:8000/'
 REPO_NAME = 'Maniac-Bot-Test'
-
+HASH = "b819f1f94ffe425bbffa711e66bdbe47"
 
 saved_flags = {
     "test_commit_right_url": {
@@ -29,12 +29,13 @@ if __name__ == '__main__':
         print(r.text)
 
     elif sys.argv[1] == 'commit':
-        url = sys.argv[2]
+        # url = sys.argv[2]
 
         # TODO(aliabd): fix this
         data = json.dumps(saved_flags, indent=4, sort_keys=True, default=str)
 
-        r = requests.post(url=API_ENDPOINT + url + '/commit/',
+        r = requests.post(url=API_ENDPOINT + REPO_NAME + '/' + HASH + \
+                                                              '/commit/',
                           data=data)
         print(r)
         print(r.text)
