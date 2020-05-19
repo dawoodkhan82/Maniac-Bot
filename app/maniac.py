@@ -5,7 +5,7 @@ import requests
 import json
 
 API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
-HASH_TO_REPO_JSON = 'dashboard/HASH_TO_REPO.json'
+HASH_TO_REPO_JSON = '../../dashboard/dashboard/HASH_TO_REPO.json'
 
 # REPO_NAME = 'Maniac-Bot-Test'
 # HASH = "b819f1f94ffe425bbffa711e66bdbe47"
