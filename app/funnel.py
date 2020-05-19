@@ -12,16 +12,16 @@ def read_in():
     :return: file url, json obj of git blame response
     """
     lines = sys.stdin.readlines()
-    return lines[0], json.loads(lines[1])
+    return lines[0], lines[1], json.loads(lines[2])
 
 
 def main():
     """
-    get file_url, blame response data from read_in()
+    get repo_name, file_url, blame response data from read_in()
     :return:
     """
 
-    file_url_string, data = read_in()
+    repo_name, file_url_string, data = read_in()
     blame_ranges = data['repositoryOwner']['repository']['object'][
             'blame']['ranges']
 
