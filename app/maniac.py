@@ -5,10 +5,10 @@ import requests
 import json
 
 API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
-HASH_TO_REPO_JSON = '../../dashboard/dashboard/HASH_TO_REPO.json'
+# HASH_TO_REPO_JSON = '/../../dashboard/dashboard/HASH_TO_REPO.json'
 
 # REPO_NAME = 'Maniac-Bot-Test'
-# HASH = "b819f1f94ffe425bbffa711e66bdbe47"
+HASH = "b819f1f94ffe425bbffa711e66bdbe47"
 
 NODE_TYPES = {
     ast.ClassDef: 'Class',
@@ -162,10 +162,12 @@ def save_flags(lines, blame_output, filename, blob_url, repo_name):
     # TODO(aliabd): fix this
     #
     data = json.dumps(saved_flags, indent=4, sort_keys=True, default=str)
-    with open(HASH_TO_REPO_JSON, 'r') as f:
-        hash_to_repo = json.load(f)
-    repo_to_hash = {v: k for k, v in hash_to_repo.items()}
-    repo_hash = repo_to_hash[repo_name]
+#    with open(HASH_TO_REPO_JSON, 'r') as f:
+#        hash_to_repo = json.load(f)
+#    repo_to_hash = {v: k for k, v in hash_to_repo.items()}
+#    repo_hash = repo_to_hash[repo_name]
+    repo_hash = HASH
+    repo_name = "Maniac-Bot-Test"
     r = requests.post(url=API_ENDPOINT + repo_name + '/' + repo_hash + '/commit/',
                       data=data)
 
