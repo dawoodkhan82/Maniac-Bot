@@ -40,7 +40,8 @@ def index(request, repo_name, random_hash):
         stale_fns = []
         if stale:
             for obj in stale:
-                stale_fns.append([getattr(obj, "file_path"),
+                stale_fns.append([[getattr(obj, "file_path"),
+                                  getattr(obj, "blob_url")],
                                   getattr(obj, "function_name"),
                                   str(getattr(obj, "time_behind")),
                                   getattr(obj, "last_doc_commit"),
@@ -49,7 +50,8 @@ def index(request, repo_name, random_hash):
         missing_fns = []
         if missing:
             for obj in missing:
-                missing_fns.append([getattr(obj, "file_path"),
+                missing_fns.append([[getattr(obj, "file_path"),
+                                    getattr(obj, "blob_url")],
                                     getattr(obj, "function_name"),
                                     " ",
                                     " ",
@@ -57,8 +59,9 @@ def index(request, repo_name, random_hash):
         passed_fns = []
         if passed:
             for obj in passed:
-                passed_fns.append([getattr(obj, "file_path"),
-                                  getattr(obj, "function_name"),
+                passed_fns.append([[getattr(obj, "file_path"),
+                                   getattr(obj, "blob_url")],
+                                   getattr(obj, "function_name"),
                                    " ",
                                    " ",
                                   getattr(obj, "code_author")])
@@ -89,6 +92,7 @@ def commit(request, repo_name, random_hash):
                 time_behind = data[key]["time_behind"]
                 is_stale = data[key]["is_stale"]
                 is_missing = data[key]["is_missing"]
+                blob_url = data[key]["blob_url"]
                 if is_stale and not is_missing:
                     # TODO(aliabd): fix this
                     try:
@@ -110,6 +114,7 @@ def commit(request, repo_name, random_hash):
                     function_name=function_name,
                     defaults={"repo_name": repo_name,
                               "file_path": file_path,
+                              "blob_url": blob_url,
                               "function_name": function_name,
                               "time_behind": time_behind,
                               "last_doc_commit": last_doc_commit,

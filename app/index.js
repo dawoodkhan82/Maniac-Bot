@@ -50,7 +50,9 @@ module.exports = app => {
       data = blameResponse,
       dataString = '';
 
-      pyshell.send(context.payload.repository.name)
+      pyshell.send(context.payload.repository.name);
+      pyshell.send(filesChanged['data'][i]['filename']);
+      pyshell.send(filesChanged['data'][i]['blob_url']);
       pyshell.send(filesChanged['data'][i]['raw_url']);
       pyshell.send(JSON.stringify(data));
 

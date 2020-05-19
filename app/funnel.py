@@ -12,7 +12,7 @@ def read_in():
     :return: file url, json obj of git blame response
     """
     lines = sys.stdin.readlines()
-    return lines[0], lines[1], json.loads(lines[2])
+    return lines[0], lines[1], lines[2], lines[3], json.loads(lines[4])
 
 
 def main():
@@ -21,7 +21,7 @@ def main():
     :return:
     """
 
-    repo_name, file_url_string, data = read_in()
+    repo_name, filename, blob_url, file_url_string, data = read_in()
     blame_ranges = data['repositoryOwner']['repository']['object'][
             'blame']['ranges']
 
@@ -45,7 +45,8 @@ def main():
                 })
 
     parsedURL = urlparse(file_url_string)
-    flags = maniac.run_flags(parsedURL.geturl(), blame_output)
+    flags = maniac.run_flags(parsedURL.geturl(), filename, blob_url,
+                             blame_output, repo_name)
 
     print(json.dumps(flags))
 

@@ -5,8 +5,10 @@ import requests
 import json
 
 API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
-REPO_NAME = 'Maniac-Bot-Test'
-HASH = "b819f1f94ffe425bbffa711e66bdbe47"
+HASH_TO_REPO_JSON = 'dashboard/HASH_TO_REPO.json'
+
+# REPO_NAME = 'Maniac-Bot-Test'
+# HASH = "b819f1f94ffe425bbffa711e66bdbe47"
 
 NODE_TYPES = {
     ast.ClassDef: 'Class',
@@ -120,7 +122,7 @@ def get_last_doc_commit(blame_output, lines, name, doc_index):
     return last_doc_commit
 
 
-def save_flags(lines, blame_output, file_path):
+def save_flags(lines, blame_output, filename, blob_url, repo_name):
     saved_flags = {}
     for name in lines.keys():
         latest_doc_date, latest_code_date, doc_index, code_index = \
@@ -148,25 +150,29 @@ def save_flags(lines, blame_output, file_path):
             author = get_author(blame_output, lines, name, code_index)
 
         saved_flags[name] = {
-            "file_path": file_path,
+            "file_path": filename,
             "is_stale": stale,
             "is_missing": missing,
             "time_behind": time_behind,
             "last_doc_commit": last_doc_commit,
-            "code_author": author
+            "code_author": author,
+            "blob_url": blob_url,
         }
 
     # TODO(aliabd): fix this
     #
     data = json.dumps(saved_flags, indent=4, sort_keys=True, default=str)
-
-    r = requests.post(url=API_ENDPOINT + REPO_NAME + '/' + HASH + '/commit/',
+    with open(HASH_TO_REPO_JSON, 'r') as f:
+        hash_to_repo = json.load(f)
+    repo_to_hash = {v: k for k, v in hash_to_repo.items()}
+    repo_hash = repo_to_hash[repo_name]
+    r = requests.post(url=API_ENDPOINT + repo_name + '/' + repo_hash + '/commit/',
                       data=data)
 
 
-def run_flags(url, blame_output):
-    filename = download_file(url)
-    with open(filename) as file:
+def run_flags(url, filename, blob_url, blame_output, repo_name):
+    filepath = download_file(url)
+    with open(filepath) as file:
         source = file.read()
 
     lines = get_line_numbers(source)
@@ -212,5 +218,5 @@ def run_flags(url, blame_output):
 
             flags[lines[name]["function_lineno"]] = comment
 
-    save_flags(lines, blame_output, url)
+    save_flags(lines, blame_output, filename, blob_url, repo_name)
     return flags
