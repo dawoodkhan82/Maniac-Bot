@@ -192,11 +192,7 @@ def coverage(request, repo_name, random_hash):
     doc_fresh = 100 * num_passed / (num_passed + num_stale +
                                        num_missing)
 
-    # context = {'stale_fns': stale_fns, "missing_fns": missing_fns,
-    #            "passed_fns": passed_fns, "repo_name": repo_name}
-
-    context = {'documentation_coverage': doc_coverage,
-               'documentation_freshness': doc_fresh}
+    context = {'documentation_coverage': str(round(doc_coverage)) + '%',
+               'documentation_freshness': str(round(doc_fresh)) + '%'}
     return HttpResponse(json.dumps(context))
 
-        # return render(request, 'maniac/index.html', context)
