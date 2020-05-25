@@ -19,6 +19,5 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('maniac.urls')),
-    path('setup/', views.setup)
+    path('', include('maniac.urls'))
 ]

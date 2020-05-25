@@ -3,14 +3,15 @@ import datetime
 import json
 import sys
 
-API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
-# API_ENDPOINT = 'http://localhost:8000/'
+# API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
+API_ENDPOINT = 'http://localhost:8000/'
 REPO_NAME = 'Maniac-Bot-Test'
-HASH = "b819f1f94ffe425bbffa711e66bdbe47"
+HASH = "8a66cc26d50b4ffcab9b79e96645e4b4"
 
 saved_flags = {
     "test_commit_right_url": {
-    "file_path": "test/test_commit2.py",
+    "file_path": "test/test_commit_new_way.py",
+    "blob_url": "www.test.com",
     "is_stale": True,
     "is_missing": False,
     "time_behind": datetime.timedelta(days=1, hours=2, minutes=3),
@@ -22,7 +23,8 @@ saved_flags = {
 if __name__ == '__main__':
 
     if sys.argv[1] == 'setup':
-        setup = json.dumps({"repo_name": REPO_NAME})
+        # setup = json.dumps({"repo_name": REPO_NAME})
+        setup = json.dumps({"repo_name": 'sample_repo'})
         r = requests.post(url=API_ENDPOINT + 'setup/',
                           data=setup)
 

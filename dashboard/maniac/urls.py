@@ -7,5 +7,7 @@ urlpatterns = [
     path('<str:repo_name>/<str:random_hash>/commit/', views.commit,
          name='commit'),
     path('<str:repo_name>/<str:random_hash>/coverage/', views.coverage,
-         name='coverage')
+         name='coverage'),
+    path('setup/', views.setup)
+
 ]

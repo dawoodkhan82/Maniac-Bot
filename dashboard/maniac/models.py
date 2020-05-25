@@ -11,3 +11,8 @@ class Docstring(models.Model):
     code_author = models.CharField(max_length=50, null=True)
     is_stale = models.BooleanField(default=False)
     is_missing = models.BooleanField(default=False)
+
+
+class Setup(models.Model):
+    repo_name = models.CharField(max_length=50)
+    random_hash = models.CharField(max_length=200)
