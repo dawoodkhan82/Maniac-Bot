@@ -179,7 +179,7 @@ def coverage(request, repo_name, random_hash):
         for obj in missing:
             num_missing += 1
     num_passed = 0
-    if num_passed:
+    if passed:
         for obj in passed:
             num_passed += 1
 
