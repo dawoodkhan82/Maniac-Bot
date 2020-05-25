@@ -5,8 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
-
-HASH_TO_REPO_JSON = 'dashboard/HASH_TO_REPO.json'
+import os
+HASH_TO_REPO_JSON = 'dashboard/dashboard/HASH_TO_REPO.json'
 
 
 def index(request, repo_name, random_hash):
@@ -126,6 +126,7 @@ def commit(request, repo_name, random_hash):
 
 @csrf_exempt
 def coverage(request, repo_name, random_hash):
+    print(os.getcwd())
     with open(HASH_TO_REPO_JSON, 'r') as f:
         hash_to_repo = json.load(f)
     if random_hash not in hash_to_repo:
@@ -150,6 +151,11 @@ def coverage(request, repo_name, random_hash):
                                               is_missing=False)
         except ObjectDoesNotExist:
             passed = False
+
+
+        print("STALE: ", stale)
+        print("MISSING: ", missing)
+        print("PASSED: ", passed)
 
         num_stale = 0
         if stale:
