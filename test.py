@@ -3,8 +3,8 @@ import datetime
 import json
 import sys
 
-# API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
-API_ENDPOINT = 'http://localhost:8000/'
+API_ENDPOINT = 'https://maniac-dashboard.herokuapp.com/'
+# API_ENDPOINT = 'http://localhost:8000/'
 REPO_NAME = 'Maniac-Bot-Test'
 HASH = "8a66cc26d50b4ffcab9b79e96645e4b4"
 
@@ -23,8 +23,7 @@ saved_flags = {
 if __name__ == '__main__':
 
     if sys.argv[1] == 'setup':
-        # setup = json.dumps({"repo_name": REPO_NAME})
-        setup = json.dumps({"repo_name": 'sample_repo'})
+        setup = json.dumps({"repo_name": REPO_NAME})
         r = requests.post(url=API_ENDPOINT + 'setup/',
                           data=setup)
 

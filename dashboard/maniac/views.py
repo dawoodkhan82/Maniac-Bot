@@ -166,7 +166,6 @@ def coverage(request, repo_name, random_hash):
     except ObjectDoesNotExist:
         passed = False
 
-
     print("STALE: ", stale)
     print("MISSING: ", missing)
     print("PASSED: ", passed)
@@ -183,10 +182,14 @@ def coverage(request, repo_name, random_hash):
     if num_passed:
         for obj in passed:
             num_passed += 1
-    doc_coverage = 100 * float((num_passed + num_stale)) / (num_passed +
+
+    print(num_stale)
+    print(num_missing)
+    print(num_passed)
+    doc_coverage = 100 * (num_passed + num_stale) / (num_passed +
                                                     num_stale +
                                                num_missing)
-    doc_fresh = 100 * float(num_passed) / (num_passed + num_stale +
+    doc_fresh = 100 * num_passed / (num_passed + num_stale +
                                        num_missing)
 
     # context = {'stale_fns': stale_fns, "missing_fns": missing_fns,
