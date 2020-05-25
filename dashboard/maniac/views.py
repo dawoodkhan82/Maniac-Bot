@@ -123,3 +123,57 @@ def commit(request, repo_name, random_hash):
                 )
 
     return HttpResponse("Success!")
+
+@csrf_exempt
+def coverage(request, repo_name, random_hash):
+    with open(HASH_TO_REPO_JSON, 'r') as f:
+        hash_to_repo = json.load(f)
+    if random_hash not in hash_to_repo:
+        return HttpResponse("Sorry! This link is invalid!", status=404)
+    elif repo_name != hash_to_repo[random_hash]:
+        return HttpResponse("Sorry! This link is invalid!", status=404)
+    else:
+        try:
+            stale = Docstring.objects.filter(repo_name=repo_name,
+                                             is_stale=True,
+                                             is_missing=False)
+        except ObjectDoesNotExist:
+            stale = False
+        try:
+            missing = Docstring.objects.filter(repo_name=repo_name,
+                                               is_missing=True)
+        except ObjectDoesNotExist:
+            missing = False
+        try:
+            passed = Docstring.objects.filter(repo_name=repo_name,
+                                              is_stale=False,
+                                              is_missing=False)
+        except ObjectDoesNotExist:
+            passed = False
+
+        num_stale = 0
+        if stale:
+            for obj in stale:
+                num_stale += 1
+        num_missing = 0
+        if missing:
+            for obj in missing:
+                num_missing += 1
+        num_passed = 0
+        if num_passed:
+            for obj in passed:
+                num_passed += 1
+        doc_coverage = 100 * float((num_passed + num_stale)) / (num_passed +
+                                                        num_stale +
+                                                   num_missing)
+        doc_fresh = 100 * float(num_passed) / (num_passed + num_stale +
+                                           num_missing)
+
+        # context = {'stale_fns': stale_fns, "missing_fns": missing_fns,
+        #            "passed_fns": passed_fns, "repo_name": repo_name}
+
+        context = {'documentation_coverage': doc_coverage,
+                   'documentation_freshness': doc_fresh}
+        return HttpResponse(json.dumps(context))
+
+        # return render(request, 'maniac/index.html', context)
