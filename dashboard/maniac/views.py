@@ -5,6 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
 import os
 import uuid
 HASH_TO_REPO_JSON = 'dashboard/dashboard/HASH_TO_REPO.json'
@@ -29,14 +32,19 @@ def about(request):
     return render(request, 'maniac/about.html')
 
 
+def handler404(request, exception, *args, **argv):
+    # return HttpResponse("Uh-oh")
+    return render(request, 'maniac/404.html', status=404)
+
+
 def index(request, repo_name, random_hash):
     try:
         setup_obj = Setup.objects.filter(repo_name=repo_name)
     except ObjectDoesNotExist:
-        return HttpResponse("Sorry! This link is invalid!")
+        return HttpResponse(status=404)
 
     if random_hash != getattr(setup_obj[0], "random_hash"):
-        return HttpResponse("Sorry! This link is invalid!")
+        return HttpResponse(status=404)
 
     try:
         stale = Docstring.objects.filter(repo_name=repo_name,
@@ -148,9 +156,9 @@ def coverage(request, repo_name, random_hash):
     try:
         setup_obj = Setup.objects.filter(repo_name=repo_name)
     except ObjectDoesNotExist:
-        return HttpResponse("Sorry! This link is invalid!", status=404)
+        return HttpResponse(status=404)
     if random_hash != getattr(setup_obj[0], "random_hash"):
-        return HttpResponse("Sorry! This link is invalid!", status=404)
+        return HttpResponse(status=404)
 
     try:
         stale = Docstring.objects.filter(repo_name=repo_name,

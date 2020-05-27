@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+            {% load static %}
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Maniac Dashboard</title>
+        <link href="{% static 'maniac/styles.css' %}" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon"
+              href="{% static 'maniac/assets/img/maniac-logo-no-bg.png' %}" />
+        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.24.1/feather.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="layoutDefault">
+            <div id="layoutDefault_content">
+                <main>
+                    <nav
+                            class="navbar navbar-marketing navbar-expand-lg bg-white navbar-light" style="padding-bottom: 10px !important;">
+                        <div class="container">
+                            <a class="navbar-brand" href="."><img
+                                    src="{% static 'maniac/assets/img/maniac-logo-name-horizontal.png' %}"
+                                    style="height:2rem"> </a><button class="navbar-toggler"
+                                                 type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
+
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav ml-auto mr-lg-5">
+                                    <li class="nav-item"><a class="nav-link"
+                                                            href="#contact-us-section">
+                                        Help
+                                    </a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                    <header
+                            class="page-header page-header-dark bg-img-repeat bg-secondary" style='background-image: url("https://i.ibb.co/phS9mFF/pattern-shapes.png"); padding-top: 5rem;
+'>
+                        <div class="page-header-content">
+                        <div class="container">
+                            <div class="col-lg-12" style="margin: auto;
+                            text-align: center">
+                            <a class="navbar-brand" style="font-size: xx-large;">
+                                Sorry, this link is invalid. We can't find
+                                the repo. Please check the Repo Name and
+                                Unique Hash.
+                            </a>
+                            </div>
+                        </div>
+                                </div>
+
+             <div class="container">
+                <section style="padding-bottom: 30px; padding-top: 100px"
+                         id="contact-us-section">
+
+                    <div class="col-lg-12">
+                        <div class="card rounded-lg text-dark">
+                            <div class="card-header py-4"
+                                 style="margin: auto; background-color:
+                                 white; font-size: x-large; color: #6A6867">Reach
+                                out to us
+                            with any questions or comments.</div>
+                            <div class="card-body">
+                                <form action="https://formspree.io/admin@gradio.app" method="POST">
+                                    <div class="form-row">
+                                        <div
+                                                class="form-group col-md-6"><label class="small text-gray-600" for="leadCapFirstName">Name</label><input class="form-control rounded-pill" id="leadCapFirstName" name="firstName" type="text" /></div>
+                                        <div class="form-group col-md-6"><label class="small text-gray-600" for="leadCapFirstName">Email address</label><input class="form-control rounded-pill"  name="email" id="leadCapFirstName" type="text" /></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div
+                                                class="form-group col-md-12"><label class="small text-gray-600" for="leadCapFirstName">Question or comment</label><textarea style="height: 100px" class="form-control rounded-xl"  name="email" id="leadCapFirstName" type="text"></textarea></div>
+                                    </div>
+                                    <button class="btn btn-primary btn-marketing btn-block rounded-pill mt-4 col-md-4 offset-md-4" type="submit">Talk to us</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+             </div>
+            </header>
+
+                </main>
+            </div>
+
+            <div id="layoutDefault_footer">
+                <footer class="footer pb-5 mt-auto bg-white footer-light">
+                    <div class="container">
+                        <div class="row align-items-center"
+                             style="padding-top: 50px">
+                            <div class="col-md-6 ">Copyright &copy; Gradio 2020</div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    </body>
+</html>

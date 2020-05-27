@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'smj4jxewn^a_%djm^u%j-#&f2&kqguz*x08g4ai^c=2jko+)jx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['maniac-dashboard.herokuapp.com']
 
 
 # Application definition
@@ -122,6 +122,6 @@ USE_TZ = True
 STATIC_URL = '/maniac/static/'
 STATICFILES_DIRS = (os.path.join('static'), )
 
-
-import django_heroku
-django_heroku.settings(locals())
+#
+# import django_heroku
+# django_heroku.settings(locals())

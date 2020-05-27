@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+
 from . import views
+
+handler404 = 'maniac.views.handler404'
 
 urlpatterns = [
     path('admin/', admin.site.urls),

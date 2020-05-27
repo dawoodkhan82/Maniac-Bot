@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import views
 
+
 urlpatterns = [
     path('', views.about, name='about'),
     path('<str:repo_name>/<str:random_hash>/', views.index, name='index'),
