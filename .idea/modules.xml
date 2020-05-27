@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../Hifz-Test/.idea/Hifz-Test.iml" filepath="$PROJECT_DIR$/../Hifz-Test/.idea/Hifz-Test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Maniac-Bot-New.iml" filepath="$PROJECT_DIR$/.idea/Maniac-Bot-New.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../gradio_static-master/.idea/gradio_static-master.iml" filepath="$PROJECT_DIR$/../gradio_static-master/.idea/gradio_static-master.iml" />
     </modules>
   </component>
 </project>
