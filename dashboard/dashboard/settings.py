@@ -122,6 +122,6 @@ USE_TZ = True
 STATIC_URL = '/maniac/static/'
 STATICFILES_DIRS = (os.path.join('static'), )
 
-#
-# import django_heroku
-# django_heroku.settings(locals())
+
+import django_heroku
+django_heroku.settings(locals())
