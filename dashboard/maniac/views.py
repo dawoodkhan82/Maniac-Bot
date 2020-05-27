@@ -63,6 +63,8 @@ def index(request, repo_name, random_hash):
     except ObjectDoesNotExist:
         passed = False
 
+    num_fns = 0
+    num_stale = 0
     stale_fns = []
     if stale:
         for obj in stale:
@@ -72,7 +74,10 @@ def index(request, repo_name, random_hash):
                               str(getattr(obj, "time_behind")),
                               getattr(obj, "last_doc_commit"),
                               getattr(obj, "code_author")])
+            num_stale += 1
+            num_fns += 1
 
+    num_missing = 0
     missing_fns = []
     if missing:
         for obj in missing:
@@ -82,6 +87,10 @@ def index(request, repo_name, random_hash):
                                 " ",
                                 " ",
                                 getattr(obj, "code_author")])
+            num_missing += 1
+            num_fns += 1
+
+    num_passed = 0
     passed_fns = []
     if passed:
         for obj in passed:
@@ -91,9 +100,20 @@ def index(request, repo_name, random_hash):
                                " ",
                                " ",
                               getattr(obj, "code_author")])
+            num_passed += 1
+            num_fns += 1
+
+    doc_coverage = 100 * (num_passed + num_stale) / (num_passed +
+                                                     num_stale +
+                                                     num_missing)
+    doc_fresh = 100 * num_passed / (num_passed + num_stale +
+                                    num_missing)
 
     context = {'stale_fns': stale_fns, "missing_fns": missing_fns,
-               "passed_fns": passed_fns, "repo_name": repo_name}
+               "passed_fns": passed_fns, "repo_name": repo_name,
+               "doc_coverage": str(round(doc_coverage)) + '%',
+               "doc_fresh": str(round(doc_fresh)) + '%',
+               "num_fns": str(num_fns)}
 
     return render(request, 'maniac/index.html', context)
 
