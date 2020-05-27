@@ -32,18 +32,21 @@ def about(request):
 
 
 def handler404(request, exception, *args, **argv):
-    # return HttpResponse("Uh-oh")
     return render(request, 'maniac/404.html', status=404)
+
+
+def handler500(request, *args, **argv):
+    return render(request, 'maniac/500.html', status=500)
 
 
 def index(request, repo_name, random_hash):
     try:
         setup_obj = Setup.objects.filter(repo_name=repo_name)
     except ObjectDoesNotExist:
-        return HttpResponse(status=404)
+        return render(request, 'maniac/404.html', status=404)
 
     if random_hash != getattr(setup_obj[0], "random_hash"):
-        return HttpResponse(status=404)
+        return render(request, 'maniac/404.html', status=404)
 
     try:
         stale = Docstring.objects.filter(repo_name=repo_name,

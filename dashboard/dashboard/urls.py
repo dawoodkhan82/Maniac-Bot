@@ -19,6 +19,7 @@ from django.urls import include, path
 from . import views
 
 handler404 = 'maniac.views.handler404'
+handler500 = 'maniac.views.handler500'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
