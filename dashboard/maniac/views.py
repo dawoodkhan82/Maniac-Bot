@@ -25,6 +25,10 @@ def setup(request):
     return HttpResponse(f'{repo_name}/{random_hash}')
 
 
+def about(request):
+    return render(request, 'maniac/about.html')
+
+
 def index(request, repo_name, random_hash):
     try:
         setup_obj = Setup.objects.filter(repo_name=repo_name)
