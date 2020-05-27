@@ -5,7 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 import os
